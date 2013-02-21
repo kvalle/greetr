@@ -1,0 +1,7 @@
+Flask==0.8
+Jinja2==2.6
+Markdown==2.1.1
+Werkzeug==0.8.3
+elementtree==1.2.7-20070827-preview
+pymongo==2.3
+wsgiref==0.1.2
