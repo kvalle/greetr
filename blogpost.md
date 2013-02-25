@@ -3,34 +3,34 @@ Serving Python Webapps With Apache
 
 Python is a great language and useful for many things. 
 Among them, and maybe especially, for writing web applications.
-There is a [plethora of great web frameworks](http://wiki.python.org/moin/WebFrameworks) out there, and Python provdes a lot of useful modules for doing things such as [parsing json](http://docs.python.org/2/library/json.html) or [talking over HTTP](http://docs.python.org/2/library/httplib.html#module-httplib) out of the box.
+There is a [plethora of great web frameworks](http://wiki.python.org/moin/WebFrameworks) out there, and Python makes it nice and easy to do such things as [parsing json](http://docs.python.org/2/library/json.html) or [talking over HTTP](http://docs.python.org/2/library/httplib.html#module-httplib) out of the box.
 
 If you don't need anyting fancy, Python even makes starting a simple HTTP server a one-liner from the command line:
 
 	$ python -m SimpleHTTPServer
 	Serving HTTP on 0.0.0.0 port 8000 ...
 
-Once you come to production, however, you will generally require something more robust to serve your application.
+Once you need to set up a production environment, however, you will generally require something more robust to serve your application than this, or any of the development servers included with your favorite web framework.
 In this blogpost I'll explain how to set up an [Apache HTTP Server](http://httpd.apache.org/) to serve Python web applications.
 
 ### Some Preliminary Setup
 
-The steps of this tutorial will assume a setup of Ubuntu 12.10, with Apache 2.2 and Python 2.7 installed.
-If you use a different configuration some details might differ, but the steps should still mostly be the same.
+The steps of this tutorial will be based on an Ubuntu 12.10 setup with Python 2.7, and we'll be installing the Ubuntu flavour of Apache 2.2.
+If you use a different configuration, then some details might differ, but the steps should still generally be the same.
 
-The first thing we will need is to install a couple of handy tools for working with Python development: [pip](http://www.pip-installer.org/en/latest/) and [virtualenv](http://www.virtualenv.org/en/latest/).
+The first thing we will need to install are couple of handy tools for working with Python development: [pip](http://www.pip-installer.org/en/latest/) and [virtualenv](http://www.virtualenv.org/en/latest/).
 If you are already familiar with these, and know how to use them, skip ahead to the next section.
 
 	$ sudo apt-get install python-virtualenv
 	$ sudo apt-get install python-pip
 	$ sudo apt-get install virtualenvwrapper
 
-In addition we'll also want to add the following lines to our `~/.bashrc` file, to help virtualenvwrapper work it's magic:
+In addition we'll also want to add the following lines to our `~/.bashrc` file, to help [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) work it's magic:
 
 	export WORKON_HOME=/path/to/your/python/environments
 	source /usr/local/bin/virtualenvwrapper.sh
 
-With the tools installed, we create a directory in which we will place our Python environment.
+With these tools installed, we create a directory in which we will place our Python environment.
 This should be the same directory we just specified in the `.bashrc` file.
 
 	$ mkdir -p /path/to/your/python/environments
@@ -39,7 +39,8 @@ Next we simply tell `virtualenv` to create a new environment for us.
 
 	$ mkvirtualenv greetr
 
-Now we have a fresh virtual Python environment for our application, which we'll look at next.
+Now we have a fresh virtual Python environment named `greetr`, which is the example application we'll be installing.
+Lets have a look at that next.
 
 ### The Example
 
@@ -48,7 +49,7 @@ It is called Greetr, and is little more than a glorified "Hello World".
 It is, however, a working Python web app, written within the [Flask framework](http://flask.pocoo.org/).
 
 If your preferred Python web framework is something other than Flask, such as [Pyramid](http://www.pylonsproject.org/), [web2py](http://www.web2py.com/), [Django](https://www.djangoproject.com/), or any other of the myriad of web frameworks for Python, don't worry.
-Chances are it too supports the common standard for interfacing web servers and Python apps known as [WSGI](http://wsgi.readthedocs.org/en/latest/), the *Web Server Gateway Interface*, and the configuration should be similar.
+Chances are it too supports the common standard for interfacing web servers and Python apps known as [WSGI](http://wsgi.readthedocs.org/en/latest/), the *Web Server Gateway Interface*, and the configuration should be similar to what we'll do here.
 
 Now, if you like, check out [the applicaton](https://github.com/kvalle/greetr).
 It is a small application, simply showing a picture of a nice robot along with a random greeting.
@@ -79,8 +80,7 @@ The app should now be working, so lets move on to se how we can serve it using A
 
 First, if you haven't already, install Apache along with the `mod_wsgi` module.
 
-	$ sudo apt-get install apache2
-	$ sudo apt-get install libapache2-mod-wsgi
+	$ sudo apt-get install apache2 libapache2-mod-wsgi
 
 Once installed, also make sure the module is activated, and that Apache is running.
 
@@ -90,10 +90,10 @@ Once installed, also make sure the module is activated, and that Apache is runni
 
 ### The WSGI-file
 
-The first thing we need to do to make Apache understand how to run our application is to write a `.wsgi` file.
-This is the file we are going to tell Apache to run, and needs to contain everything necessary for Apaches `mod_wsgi` to instansiate the application.
+The first thing we need to do to make Apache understand how to run our application is to write called `greetr.wsgi`.
+This is the file we'll be telling Apache to run, and it needs to contain everything necessary for Apaches `mod_wsgi` to instanciate the application for us.
 
-Here is the [wsgi file](https://github.com/kvalle/greetr/blob/master/greetr.wsgi) we'll use for Greetr:
+This is what [the file](https://github.com/kvalle/greetr/blob/master/greetr.wsgi) looks like:
 
 	import sys
 	import site
