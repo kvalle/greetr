@@ -7,8 +7,10 @@ There is a [plethora of great web frameworks](http://wiki.python.org/moin/WebFra
 
 If you don't need anyting fancy, Python even makes starting a simple HTTP server a one-liner from the command line:
 
-	$ python -m SimpleHTTPServer
-	Serving HTTP on 0.0.0.0 port 8000 ...
+```bash
+$ python -m SimpleHTTPServer
+Serving HTTP on 0.0.0.0 port 8000 ...
+```
 
 Once you need to set up a production environment, however, you will generally require something more robust to serve your application than this, or any of the development servers included with your favorite web framework.
 In this blogpost I'll explain how to set up an [Apache HTTP Server](http://httpd.apache.org/) to serve Python web applications.
@@ -21,23 +23,31 @@ If you use a different configuration, then some details might differ, but the st
 The first thing we will need to install are couple of handy tools for working with Python development: [pip](http://www.pip-installer.org/en/latest/) and [virtualenv](http://www.virtualenv.org/en/latest/).
 If you are already familiar with these, and know how to use them, skip ahead to the next section.
 
-	$ sudo apt-get install python-virtualenv
-	$ sudo apt-get install python-pip
-	$ sudo apt-get install virtualenvwrapper
+```bash
+$ sudo apt-get install python-virtualenv
+$ sudo apt-get install python-pip
+$ sudo apt-get install virtualenvwrapper
+```
 
 In addition we'll also want to add the following lines to our `~/.bashrc` file, to help [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) work it's magic:
 
-	export WORKON_HOME=/path/to/your/python/environments
-	source /usr/local/bin/virtualenvwrapper.sh
+```bash
+export WORKON_HOME=/path/to/your/python/environments
+source /usr/local/bin/virtualenvwrapper.sh
+```
 
 With these tools installed, we create a directory in which we will place our Python environment.
 This should be the same directory we just specified in the `.bashrc` file.
 
-	$ mkdir -p /path/to/your/python/environments
+```bash
+$ mkdir -p /path/to/your/python/environments
+```
 
 Next we simply tell `virtualenv` to create a new environment for us.
 
-	$ mkvirtualenv greetr
+```bash
+$ mkvirtualenv greetr
+```
 
 Now we have a fresh virtual Python environment named `greetr`, which is the example application we'll be installing.
 Lets have a look at that next.
@@ -57,22 +67,30 @@ Its details does not really matter, its main point is to serve as a basis for th
 
 Lets start by cloning the application down from GitHub so we have something to work with.
 
-	$ git clone git://github.com/kvalle/greetr.git
-	$ cd greetr
+```bash
+$ git clone git://github.com/kvalle/greetr.git
+$ cd greetr
+```
 
 Next we'll need to install the dependencies.
 First make sure you have the correct environment activated:
 
-	$ workon greetr
+```bash
+$ workon greetr
+```
 
 Then use pip to install everything specified in [requirements.txt](https://github.com/kvalle/greetr/blob/master/requirements.txt).
 
-	$ pip install -r requirements.txt
+```bash
+$ pip install -r requirements.txt
+```
 
 Before we move on to installing and configuring Apache, lets check that everything is working.
 Start Flask's embedded webserver using the provided script `runserver.py`, then visit Greetr at [http://127.0.0.1:5000/](http://127.0.0.1:5000/).
 
-	$ ./runserver.py
+```bash
+$ ./runserver.py
+```
 
 The app should now be working, so lets move on to se how we can serve it using Apache.
 
@@ -80,13 +98,16 @@ The app should now be working, so lets move on to se how we can serve it using A
 
 First, if you haven't already, install Apache along with the `mod_wsgi` module.
 
-	$ sudo apt-get install apache2 libapache2-mod-wsgi
+```bash
+$ sudo apt-get install apache2 libapache2-mod-wsgi
+```
 
 Once installed, also make sure the module is activated, and that Apache is running.
 
-	$ sudo a2enmod wsgi
-	$ sudo service apache2 start
-
+```bash
+$ sudo a2enmod wsgi
+$ sudo service apache2 start
+```
 
 ### The WSGI-file
 
@@ -95,20 +116,22 @@ This is the file we'll be telling Apache to run, and it needs to contain everyth
 
 This is what [the file](https://github.com/kvalle/greetr/blob/master/greetr.wsgi) looks like:
 
-	import sys
-	import site
-	import os.path
+```python
+import sys
+import site
+import os.path
 
-	# Add custom site-packages directory
-	your_env_package_dir = '/path/to/your/python/environments/greetr/lib/python2.7/site-packages'
-	site.addsitedir(your_env_package_dir)
+# Add custom site-packages directory
+your_env_package_dir = '/path/to/your/python/environments/greetr/lib/python2.7/site-packages'
+site.addsitedir(your_env_package_dir)
 
-	# Add greetr to system path
-	app_path = os.path.dirname(__file__)
-	sys.path.insert(0, app_path)
+# Add greetr to system path
+app_path = os.path.dirname(__file__)
+sys.path.insert(0, app_path)
 
-	# Import greetr
-	from greetr import app as application
+# Import greetr
+from greetr import app as application
+```
 
 So, what happens here?
 
@@ -128,41 +151,49 @@ Finally, we need to configure Apache itself, by adding a [virtualhost configurat
 The example contains the configuration you need. 
 Simply copy the file among your other vhost files under Apache:
 
-	$ sudo cp greetr.vhost /etc/apache2/sites-available/greetr
+```bash
+$ sudo cp greetr.vhost /etc/apache2/sites-available/greetr
+```
 
 The configuration look like this:
 
-	<VirtualHost *:80>
-	    ServerName localhost
-	    ServerAlias localhost
+```apache
+<VirtualHost *:80>
+    ServerName localhost
+    ServerAlias localhost
 
-	    WSGIDaemonProcess greetr user=www-data group=www-data threads=5
-	    WSGIScriptAlias / /path/to/where/you/put/greetr/greetr.wsgi
+    WSGIDaemonProcess greetr user=www-data group=www-data threads=5
+    WSGIScriptAlias / /path/to/where/you/put/greetr/greetr.wsgi
 
-	    <Directory /path/to/where/you/put/greetr/>
-	        WSGIProcessGroup greetr
-	        WSGIApplicationGroup %{GLOBAL}
-	        Order deny,allow
-	        Allow from all
-	    </Directory>
+    <Directory /path/to/where/you/put/greetr/>
+        WSGIProcessGroup greetr
+        WSGIApplicationGroup %{GLOBAL}
+        Order deny,allow
+        Allow from all
+    </Directory>
 
-	    # Custom log file locations
-	    LogLevel warn
-	    ErrorLog  /path/to/where/you/put/greetr/error.log
-	    CustomLog /path/to/where/you/put/greetr/access.log combined
-	</VirtualHost>
+    # Custom log file locations
+    LogLevel warn
+    ErrorLog  /path/to/where/you/put/greetr/error.log
+    CustomLog /path/to/where/you/put/greetr/access.log combined
+</VirtualHost>
+```
 
 The file tells Apache where to find the wsgi-file we wrote above, other details on how to start the WSGI deamon process, as well as on what domain it should serve the site.
 Change the paths to wherever you placed the application, and the values of `ServerName` and `ServerAlias` if you are doing this on a remote server.
 
 Next we need to activate the site:
 
-	$ sudo a2ensite greetr
+```bash
+$ sudo a2ensite greetr
+```
 
 The `a2ensite` command will simply symlink `greetr` from the `sites-available` directory and into `sites-enabled`, which is where Apache look for the activated virualhosts.
 Once this is done, we need to restart Apache for the changes to take effect.
 
-	$ sudo service apache2 restart
+```bash
+$ sudo service apache2 restart
+```
 
 *(Side note: some flavours of Apache differs from the one shipped with Ubuntu. If you have trouble finding the `sites-available` directory, you probably just need to put the virtualhost configuration directly inside `apache2.conf`.)*
 
