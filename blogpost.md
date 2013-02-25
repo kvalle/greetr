@@ -112,19 +112,25 @@ This is what [the file](https://github.com/kvalle/greetr/blob/master/greetr.wsgi
 
 So, what happens here?
 
-First, since Apache won't be running the wsgi-file from within our nice and cozy custom made Python environment, we need to manually make the installed modules available.
+First, since Apache won't automagically be running the wsgi-file from within our nice and cozy custom made Python environment, we need to manually make the installed modules available.
 We do this by specifying the path to our pyenv, and calling `site.addsitedir`.
 
 Secondly, we add the location of `greetr` to Pythons system path.
 
 Finally we import `greetr`. 
-Note that we give it the name `application`, which is what Apache will be looking for.
-This part will probably differ if you use a framework other than Flask.
+This part might differ if you use a framework other than Flask.
+But you should in all cases end up with an import named `application`, which is what Apache will be looking for.
 
 ### Configuring Apache
 
-Finally, we need to configure Apache itself, by adding a virtualhosts configuration for Greetr.
-The configuration should look something like this:
+Finally, we need to configure Apache itself, by adding a [virtualhost configuration](http://httpd.apache.org/docs/2.2/vhosts/) for Greetr.
+
+The example contains the configuration you need. 
+Simply copy the file among your other vhost files under Apache:
+
+	$ sudo cp greetr.vhost /etc/apache2/sites-available/greetr
+
+The configuration look like this:
 
 	<VirtualHost *:80>
 	    ServerName localhost
@@ -146,16 +152,14 @@ The configuration should look something like this:
 	    CustomLog /path/to/where/you/put/greetr/access.log combined
 	</VirtualHost>
 
-The file tells Apache where to find the wsgi-file we just wrote, and other details on how to start the WSGI deamon process.
-Copy the file to place it among your other vhost files under Apache:
-
-	$ sudo cp greetr.vhost /etc/apache2/sites-available/greetr
+The file tells Apache where to find the wsgi-file we wrote above, other details on how to start the WSGI deamon process, as well as on what domain it should serve the site.
+Change the paths to wherever you placed the application, and the values of `ServerName` and `ServerAlias` if you are doing this on a remote server.
 
 Next we need to activate the site:
 
-	$ sudo a2ensite notato
+	$ sudo a2ensite greetr
 
-The `a2ensite` command will simply symlink `greetr` from the `sites-available` directory and into `sites-enabled`.
+The `a2ensite` command will simply symlink `greetr` from the `sites-available` directory and into `sites-enabled`, which is where Apache look for the activated virualhosts.
 Once this is done, we need to restart Apache for the changes to take effect.
 
 	$ sudo service apache2 restart
