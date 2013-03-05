@@ -1,8 +1,7 @@
 Serving Python Webapps With Apache
 ===
 
-Python is a great language and useful for many things. 
-Among them, and maybe especially, for writing web applications.
+Python is a great language that is useful for many things. Especially for writing web applications.
 There is a [plethora of great web frameworks](http://wiki.python.org/moin/WebFrameworks) out there, and Python makes it nice and easy to do such things as [parsing json](http://docs.python.org/2/library/json.html) or [talking over HTTP](http://docs.python.org/2/library/httplib.html#module-httplib) out of the box.
 
 If you don't need anyting fancy, Python even makes starting a simple HTTP server a one-liner from the command line:
