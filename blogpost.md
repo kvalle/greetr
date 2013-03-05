@@ -58,14 +58,14 @@ For purposes of this turtorial, I have created a simple example application.
 It is called Greetr, and is little more than a glorified "Hello World".
 It is, however, a working Python web app, written within the [Flask framework](http://flask.pocoo.org/).
 
-If your preferred Python web framework is something other than Flask, such as [Pyramid](http://www.pylonsproject.org/), [web2py](http://www.web2py.com/), [Django](https://www.djangoproject.com/), or any other of the myriad of web frameworks for Python, don't worry.
-Chances are it too supports the common standard for interfacing web servers and Python apps known as [WSGI](http://wsgi.readthedocs.org/en/latest/), the *Web Server Gateway Interface*, and the configuration should be similar to what we'll do here.
+If your preferred Python web framework is something other than Flask, such as [Pyramid](http://www.pylonsproject.org/), [web2py](http://www.web2py.com/), [Django](https://www.djangoproject.com/), or any other, don't worry.
+Chances are it supports the common standard for interfacing web servers and Python apps known as [WSGI](http://wsgi.readthedocs.org/en/latest/), the *Web Server Gateway Interface*, and the configuration should be similar to what we'll do here.
 
 Now, if you like, check out [the applicaton](https://github.com/kvalle/greetr).
-It is a small application, simply showing a picture of a nice robot along with a random greeting.
-Its details does not really matter, its main point is to serve as a basis for the examples in this tutorial, and to give you something to use to verify the setup after completing the tutorial.
+It is a small application, simply showing a picture of a smiling robot along with a random greeting.
+The main point is to serve as a basis for the examples in this tutorial, and to give you a fully functional web application to verify the setup after completing the tutorial.
 
-Lets start by cloning the application down from GitHub so we have something to work with.
+Let's start by cloning the sample application down from GitHub:
 
 ```bash
 $ git clone git://github.com/kvalle/greetr.git
@@ -86,13 +86,13 @@ $ pip install -r requirements.txt
 ```
 
 Before we move on to installing and configuring Apache, lets check that everything is working.
-Start Flask's embedded webserver using the provided script `runserver.py`, then visit Greetr at [http://127.0.0.1:5000/](http://127.0.0.1:5000/).
+Start Flask's embedded webserver using the provided script:
 
 ```bash
 $ ./runserver.py
 ```
 
-The app should now be working, so lets move on to se how we can serve it using Apache.
+Then visit Greetr at [http://127.0.0.1:5000/](http://127.0.0.1:5000/). The app should be working, so lets move on to se how we can serve it using Apache.
 
 ### Install Apache
 
