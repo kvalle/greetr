@@ -61,7 +61,7 @@ It is, however, a working Python web app, written within the [Flask framework](h
 If your preferred Python web framework is something other than Flask, such as [Pyramid](http://www.pylonsproject.org/), [web2py](http://www.web2py.com/), [Django](https://www.djangoproject.com/), or any other, don't worry.
 Chances are it supports the common standard for interfacing web servers and Python apps known as [WSGI](http://wsgi.readthedocs.org/en/latest/), the *Web Server Gateway Interface*, and the configuration should be similar to what we'll do here.
 
-Now, if you like, check out [the applicaton](https://github.com/kvalle/greetr).
+Now, if you like, check out [the greetr applicaton](https://github.com/kvalle/greetr).
 It is a small application, simply showing a picture of a smiling robot along with a random greeting.
 The main point is to serve as a basis for the examples in this tutorial, and to give you a fully functional web application to verify the setup after completing the tutorial.
 
@@ -136,7 +136,7 @@ from greetr import app as application
 So, what happens here?
 
 First, since Apache won't be able to autodetect the wsgi-file from far inside our custom made Python environment, we need to manually make the installed modules available.
-We do this by specifying the path to our pyenv, and calling `site.addsitedir`.
+We do this by specifying the path to our python environment folder, and calling `site.addsitedir`.
 
 Secondly, we add the location of `greetr` to Pythons system path.
 
