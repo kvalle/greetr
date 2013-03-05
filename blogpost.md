@@ -49,12 +49,12 @@ Next we simply tell `virtualenv` to create a new environment for us.
 $ mkvirtualenv greetr
 ```
 
-Now we have a fresh virtual Python environment named `greetr`, which is the example application we'll be installing.
+Now we have a fresh virtual Python environment named `greetr`, which will hold the example application we'll be installing.
 Lets have a look at that next.
 
 ### The Example
 
-For purposes of this turtorial, I have created a simple example application.
+For purposes of this tutorial, I have created a simple example application.
 It is called Greetr, and is little more than a glorified "Hello World".
 It is, however, a working Python web app, written within the [Flask framework](http://flask.pocoo.org/).
 
@@ -111,10 +111,10 @@ $ sudo service apache2 start
 
 ### The WSGI-file
 
-The first thing we need to do to make Apache understand how to run our application is to write called `greetr.wsgi`.
-This is the file we'll be telling Apache to run, and it needs to contain everything necessary for Apaches `mod_wsgi` to instanciate the application for us.
+The first thing we need to do, is to make Apache understand how to serve our application by defining the file called `greetr.wsgi`.
+The `.wsgi` file contains everything necessary for Apaches `mod_wsgi` to instantiate and serve the application.
 
-This is what [the file](https://github.com/kvalle/greetr/blob/master/greetr.wsgi) looks like:
+This is what [greetr.wsgi](https://github.com/kvalle/greetr/blob/master/greetr.wsgi) looks like:
 
 ```python
 import sys
@@ -141,21 +141,20 @@ We do this by specifying the path to our pyenv, and calling `site.addsitedir`.
 Secondly, we add the location of `greetr` to Pythons system path.
 
 Finally we import `greetr`. 
-This part might differ if you use a framework other than Flask.
-But you should in all cases end up with an import named `application`, which is what Apache will be looking for.
+This part might differ if you use a framework other than Flask, but you should in any case end up with an import named `application`, which is what Apache will be looking for.
 
 ### Configuring Apache
 
 Finally, we need to configure Apache itself, by adding a [virtualhost configuration](http://httpd.apache.org/docs/2.2/vhosts/) for Greetr.
 
-The example contains the configuration you need. 
-Simply copy the file among your other vhost files under Apache:
+The example project contains the configuration you need. 
+Simply copy `greetr.vhost` to Apaches site configuration folder:
 
 ```bash
 $ sudo cp greetr.vhost /etc/apache2/sites-available/greetr
 ```
 
-The configuration look like this:
+The configuration looks like this:
 
 ```apache
 <VirtualHost *:80>
