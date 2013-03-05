@@ -32,7 +32,7 @@ $ sudo apt-get install virtualenvwrapper
 In addition we'll also want to add the following lines to our `~/.bashrc` file, to help [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) work it's magic:
 
 ```bash
-export WORKON_HOME=/path/to/your/python/environments
+export WORKON_HOME=/opt/python-environments
 source /usr/local/bin/virtualenvwrapper.sh
 ```
 
@@ -40,7 +40,7 @@ With these tools installed, we create a directory in which we will place our Pyt
 This should be the same directory we just specified in the `.bashrc` file.
 
 ```bash
-$ mkdir -p /path/to/your/python/environments
+$ mkdir -p /opt/python-environments
 ```
 
 Next we simply tell `virtualenv` to create a new environment for us.
@@ -122,7 +122,7 @@ import site
 import os.path
 
 # Add custom site-packages directory
-your_env_package_dir = '/path/to/your/python/environments/greetr/lib/python2.7/site-packages'
+your_env_package_dir = '/opt/python-environments/greetr/lib/python2.7/site-packages'
 site.addsitedir(your_env_package_dir)
 
 # Add greetr to system path
