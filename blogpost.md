@@ -134,10 +134,12 @@ from greetr import app as application
 
 So, what happens here?
 
-First, since Apache won't be able to autodetect the wsgi-file within our custom python environment, we need to manually make the installed module available.
-We do this by specifying the path to our python environment folder, and calling `site.addsitedir`.
+The first thing we do is to add another "site directory" for Python to use.
+This is the directory where we have installed all of Greetr's dependencies under virtualenv.
+We need to add this as a site directory explicitly because Apache won't know to use the `greetr` environment.
 
 Secondly, we add the location of `greetr` to Pythons system path.
+We need to do this in order to be able to import the `greetr` modules, both from the wsgi-file, aswell as from within `greetr` itself.
 
 Finally we import `greetr`. 
 This part might differ if you use a framework other than Flask, but you should in any case end up with an import named `application`, which is what Apache will be looking for.
