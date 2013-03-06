@@ -191,10 +191,10 @@ $ sudo a2ensite greetr
 ```
 
 The `a2ensite` command will simply symlink `greetr` from the `sites-available` directory and into `sites-enabled`, which is where Apache look for the activated virualhosts.
-Once this is done, we need to restart Apache for the changes to take effect.
+Once this is done, we need to reload the Apache configuration for the changes to take effect.
 
 ```bash
-$ sudo service apache2 restart
+$ sudo service apache2 reload
 ```
 
 *(Side note: some flavours of Apache differs from the one shipped with Ubuntu. If you have trouble finding the `sites-available` directory, you probably just need to put the virtualhost configuration directly inside `apache2.conf`.)*
