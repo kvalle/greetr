@@ -1,7 +1,7 @@
 Serving Python Webapps With Apache
 ===
 
-Python is a great language that is useful for many things. Especially for writing web applications.
+Python is a great language that is useful for many things, among them writing web applications.
 There is a [plethora of great web frameworks](http://wiki.python.org/moin/WebFrameworks) out there, and Python makes it nice and easy to do such things as [parsing json](http://docs.python.org/2/library/json.html) or [talking over HTTP](http://docs.python.org/2/library/httplib.html#module-httplib) out of the box.
 
 If you don't need anyting fancy, Python even makes starting a simple HTTP server a one-liner from the command line:
@@ -42,14 +42,7 @@ This should be the same directory we just specified in the `.bashrc` file.
 $ mkdir -p /opt/python-environments
 ```
 
-Next we simply tell `virtualenv` to create a new environment for us.
-
-```bash
-$ mkvirtualenv greetr
-```
-
-Now we have a fresh virtual Python environment named `greetr`, which will hold the example application we'll be installing.
-Lets have a look at that next.
+With these tools installed, let's move on to have a look at [Greetr](https://github.com/kvalle/greetr), the example application we'll be installing as part of this tutorial.
 
 ### The Example
 
@@ -60,7 +53,7 @@ It is, however, a working Python web app, written within the [Flask framework](h
 If your preferred Python web framework is something other than Flask, such as [Pyramid](http://www.pylonsproject.org/), [web2py](http://www.web2py.com/), [Django](https://www.djangoproject.com/), or any other, don't worry.
 Chances are it supports the common standard for interfacing web servers and Python apps known as [WSGI](http://wsgi.readthedocs.org/en/latest/), the *Web Server Gateway Interface*, and the configuration should be similar to what we'll do here.
 
-Now, if you like, check out [the greetr applicaton](https://github.com/kvalle/greetr).
+Now, if you like, check out [the Greetr applicaton](https://github.com/kvalle/greetr).
 It is a small application, simply showing a picture of a smiling robot along with a random greeting.
 The main point is to serve as a basis for the examples in this tutorial, and to give you a fully functional web application to verify the setup after completing the tutorial.
 
@@ -71,14 +64,20 @@ $ git clone git://github.com/kvalle/greetr.git
 $ cd greetr
 ```
 
-Next we'll need to install the dependencies.
-First make sure you have the correct environment activated:
+The next thing we need to do is to create a virtual environment.
+We'll simply tell `virtualenv` to create one for us, and that it should be named `greetr`.
 
 ```bash
-$ workon greetr
+$ mkvirtualenv greetr
 ```
 
-Then use pip to install everything specified in [requirements.txt](https://github.com/kvalle/greetr/blob/master/requirements.txt).
+Now we have a fresh virtual Python environment where we can install anything, without worrying what other libraries (or in which versions) other applications install in their environments.
+The prompt should now have changed to indicate that we are currently working in the `greetr` environment.
+You change this by using the command `deactivate`, and re-enter the environment by calling `workon greetr`.
+
+Next we'll need to install the dependencies.
+Greetr comes with the file [requirements.txt](https://github.com/kvalle/greetr/blob/master/requirements.txt), which lists everything you need to install.
+Use `pip` to install the dependencies by issuing the following command:
 
 ```bash
 $ pip install -r requirements.txt
@@ -91,7 +90,7 @@ Start Flask's embedded webserver using the provided script:
 $ ./runserver.py
 ```
 
-Then visit Greetr at [http://127.0.0.1:5000/](http://127.0.0.1:5000/). The app should be working, so lets move on to se how we can serve it using Apache.
+Then visit Greetr at [http://127.0.0.1:5000/](http://127.0.0.1:5000/). The app should be working, so lets move on to see how we can start serving it using Apache.
 
 ### Install Apache
 
