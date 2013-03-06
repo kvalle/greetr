@@ -57,11 +57,12 @@ Now, if you like, check out [the Greetr applicaton](https://github.com/kvalle/gr
 It is a small application, simply showing a picture of a smiling robot along with a random greeting.
 The main point is to serve as a basis for the examples in this tutorial, and to give you a fully functional web application to verify the setup after completing the tutorial.
 
-Let's start by cloning the sample application down from GitHub:
+Let's start by cloning the sample application down from GitHub, and put it under `~/web/greetr`.
 
 ```bash
-$ git clone git://github.com/kvalle/greetr.git
-$ cd greetr
+$ mkdir ~/web
+$ git clone git://github.com/kvalle/greetr.git ~/web/greetr
+$ cd ~/web/greetr
 ```
 
 The next thing we need to do is to create a virtual environment.
@@ -160,9 +161,9 @@ The configuration looks like this:
     ServerAlias localhost
 
     WSGIDaemonProcess greetr user=www-data group=www-data threads=5
-    WSGIScriptAlias / /path/to/where/you/put/greetr/greetr.wsgi
+    WSGIScriptAlias / /home/your-user/web/greetr/greetr.wsgi
 
-    <Directory /path/to/where/you/put/greetr/>
+    <Directory /home/your-user/web/greetr/>
         WSGIProcessGroup greetr
         WSGIApplicationGroup %{GLOBAL}
         Order deny,allow
@@ -171,10 +172,12 @@ The configuration looks like this:
 
     # Custom log file locations
     LogLevel warn
-    ErrorLog  /path/to/where/you/put/greetr/error.log
-    CustomLog /path/to/where/you/put/greetr/access.log combined
+    ErrorLog  /home/your-user/web/greetr/error.log
+    CustomLog /home/your-user/web/greetr/access.log combined
 </VirtualHost>
 ```
+
+Make sure you replace the `your-user` with the name ouf your user.
 
 The file tells Apache where to find the wsgi-file we wrote above, other details on how to start the WSGI deamon process, as well as on what domain it should serve the site.
 Change the paths to wherever you placed the application, and the values of `ServerName` and `ServerAlias` if you are doing this on a remote server.
