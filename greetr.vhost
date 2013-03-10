@@ -3,9 +3,9 @@
     ServerAlias localhost
 
     WSGIDaemonProcess greetr user=www-data group=www-data threads=5
-    WSGIScriptAlias / /path/to/where/you/put/greetr/greetr.wsgi
+    WSGIScriptAlias / /home/your-user/web/greetr/greetr.wsgi
 
-    <Directory /path/to/where/you/put/greetr/>
+    <Directory /home/your-user/web/greetr/>
         WSGIProcessGroup greetr
         WSGIApplicationGroup %{GLOBAL}
         Order deny,allow
@@ -14,6 +14,6 @@
 
     # Custom log file locations
     LogLevel warn
-    ErrorLog  /path/to/where/you/put/greetr/error.log
-    CustomLog /path/to/where/you/put/greetr/access.log combined
+    ErrorLog  /home/your-user/web/greetr/error.log
+    CustomLog /home/your-user/web/greetr/access.log combined
 </VirtualHost>
