@@ -23,23 +23,27 @@ The first things we will need to install are couple of tools that are handy when
 If you are already familiar with these, and know how to use them, skip ahead to the next section.
 
 ```bash
-$ sudo apt-get install python-virtualenv
 $ sudo apt-get install python-pip
+$ sudo apt-get install python-virtualenv
 $ sudo apt-get install virtualenvwrapper
 ```
 
-In addition we'll also want to add the following lines to our `~/.bashrc` file, to help [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) work it's magic:
+`pip` is a package manager for Python.
+`virtualenv` is a tool for creating small virtual environments where we can install Python packages, and [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) is simply a set of tools to make it easier to work with virtual environments.
+Once you have these installed open a fresh terminal, which will force `virtualenvwrapper` to do some initial setup.
+
+With newer versions of `virtualenvwrapper` this is all that is needed.
+Should you be using an older version, for example the default one under Ubuntu 12.04, you might also want to add the following lines to your`~/.bashrc` file:
 
 ```bash
-export WORKON_HOME=/opt/python-environments
+export WORKON_HOME=~/.virtualenvs
 source /usr/local/bin/virtualenvwrapper.sh
 ```
 
-With these tools installed, we create a directory in which we will place our Python environment.
-This should be the same directory we just specified in the `.bashrc` file.
+And run this command:
 
 ```bash
-$ mkdir -p /opt/python-environments
+$ mkdir ~/.virtualenvs
 ```
 
 Next, let's move on to have a look at [Greetr](https://github.com/kvalle/greetr), the example application we'll be installing as part of this tutorial.
@@ -137,6 +141,7 @@ So, what happens here?
 The first thing we do is to add another "site directory" for Python to use.
 This is the directory where we have installed all of Greetr's dependencies under virtualenv.
 We need to add this as a site directory explicitly because Apache won't know to use the `greetr` environment.
+Also notice that the directory is somewhere under your home folder, so make sure you change `your-user` with whatever your username happens to be.
 
 Secondly, we add the location of `greetr` to Pythons system path.
 We need to do this in order to be able to import the `greetr` modules, both from the wsgi-file, aswell as from within `greetr` itself.
@@ -179,15 +184,16 @@ The configuration looks like this:
 </VirtualHost>
 ```
 
-Make sure you replace the `your-user` with the name ouf your user.
+Make sure you replace the `your-user` with the name ouf your user all four places.
 
 The file tells Apache where to find the wsgi-file we wrote above, other details on how to start the WSGI deamon process, as well as on what domain it should serve the site.
 Correct the paths to where we placed the application, and change the values of `ServerName` and `ServerAlias` if you are doing this on a remote server.
 
-Next we need to activate the site:
+Next we need to activate the new `greetr` site, and disable the default one.:
 
 ```bash
 $ sudo a2ensite greetr
+$ sudo a2dissite default
 ```
 
 The `a2ensite` command will simply symlink `greetr` from the `sites-available` directory and into `sites-enabled`, which is where Apache look for the activated virualhosts.
