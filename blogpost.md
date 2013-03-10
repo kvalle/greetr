@@ -30,10 +30,10 @@ $ sudo apt-get install virtualenvwrapper
 
 `pip` is a package manager for Python.
 `virtualenv` is a tool for creating small virtual environments where we can install Python packages, and [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) is simply a set of tools to make it easier to work with virtual environments.
-Once you have these installed open a fresh terminal, which will force `virtualenvwrapper` to do some initial setup.
+Once you have these installed, open a fresh terminal. This will force `virtualenvwrapper` to do some initial setup.
 
 With newer versions of `virtualenvwrapper` this is all that is needed.
-Should you be using an older version, for example the default one under Ubuntu 12.04, you might also want to add the following lines to your`~/.bashrc` file:
+Should you be using an older version, for example the default one under Ubuntu 12.04, you might also want to add the following lines to your `~/.bashrc` file:
 
 ```bash
 export WORKON_HOME=~/.virtualenvs
@@ -125,7 +125,7 @@ import site
 import os.path
 
 # Add custom site-packages directory
-your_env_package_dir = '/opt/python-environments/greetr/lib/python2.7/site-packages'
+your_env_package_dir = '/home/your-user/.virtualenvs/greetr/lib/python2.7/site-packages'
 site.addsitedir(your_env_package_dir)
 
 # Add greetr to system path
@@ -184,12 +184,12 @@ The configuration looks like this:
 </VirtualHost>
 ```
 
-Make sure you replace the `your-user` with the name ouf your user all four places.
+Make sure you replace the `your-user` with the name of your user all four places.
 
 The file tells Apache where to find the wsgi-file we wrote above, other details on how to start the WSGI deamon process, as well as on what domain it should serve the site.
 Correct the paths to where we placed the application, and change the values of `ServerName` and `ServerAlias` if you are doing this on a remote server.
 
-Next we need to activate the new `greetr` site, and disable the default one.:
+Next we need to activate the new `greetr` site, and disable the default one:
 
 ```bash
 $ sudo a2ensite greetr
