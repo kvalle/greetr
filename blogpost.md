@@ -125,7 +125,7 @@ import site
 import os.path
 
 # Add custom site-packages directory
-your_env_package_dir = '/opt/python-environments/greetr/lib/python2.7/site-packages'
+your_env_package_dir = '/home/your-user/.virtualenvs/greetr/lib/python2.7/site-packages'
 site.addsitedir(your_env_package_dir)
 
 # Add greetr to system path
