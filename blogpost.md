@@ -1,6 +1,3 @@
-Serving Python Webapps With Apache
-===
-
 Python is a great language that is useful for many things, among them creating web applications.
 There is a [plethora of great web frameworks](http://wiki.python.org/moin/WebFrameworks) out there, and Python makes it nice and easy to do such things as [parsing json](http://docs.python.org/2/library/json.html) or [talking over HTTP](http://docs.python.org/2/library/httplib.html#module-httplib) out of the box.
 
@@ -14,7 +11,7 @@ Serving HTTP on 0.0.0.0 port 8000 ...
 Once you need to set up a production environment, however, you will generally require something more robust to serve your application than this, or any of the development servers included with your favorite web framework.
 In this blogpost I'll explain how to set up an [Apache HTTP Server](http://httpd.apache.org/) to serve Python web applications.
 
-### Some Preliminary Setup
+## Some Preliminary Setup
 
 The steps of this tutorial will be based on an Ubuntu 12.10 setup with Python 2.7, and we'll be installing the Ubuntu flavour of Apache 2.2.
 If you use a different configuration, then some details might differ, but the steps should still generally be the same.
@@ -48,7 +45,7 @@ $ mkdir ~/.virtualenvs
 
 Next, let's move on to have a look at [Greetr](https://github.com/kvalle/greetr), the example application we'll be installing as part of this tutorial.
 
-### The Example
+## The Example
 
 To have a concrete example to work with, I created a simple example application.
 It is called Greetr, and is little more than a glorified "Hello World".
@@ -97,7 +94,7 @@ $ ./runserver.py
 
 Then visit Greetr at [http://127.0.0.1:5000/](http://127.0.0.1:5000/). The app should now be working, so lets move on to see how we can start serving it using Apache.
 
-### Install Apache
+## Install Apache
 
 First, if you haven't already, install Apache along with the `mod_wsgi` module.
 
@@ -112,7 +109,7 @@ $ sudo a2enmod wsgi
 $ sudo service apache2 start
 ```
 
-### The WSGI-file
+## The WSGI-file
 
 The first thing we need to do, is to make Apache understand how to serve our application by defining the file called `greetr.wsgi`.
 This file contains everything necessary for Apaches `mod_wsgi` to instantiate and serve the application.
@@ -149,7 +146,7 @@ We need to do this in order to be able to import the `greetr` modules, both from
 Finally we import `greetr`. 
 This part might differ if you use a framework other than Flask, but you should in any case end up with an import named `application`, which is what Apache will be looking for.
 
-### Configuring Apache
+## Configuring Apache
 
 At last, we need to configure Apache itself, by adding a [virtualhost configuration](http://httpd.apache.org/docs/2.2/vhosts/) for Greetr.
 
